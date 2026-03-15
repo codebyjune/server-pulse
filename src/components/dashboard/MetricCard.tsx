@@ -4,7 +4,7 @@ const { Title, Text } = Typography;
 interface MetricCardProps {
   // id: number;
   title: string;
-  value: number;
+   value: string | number;
   unit?: string;
 }
 
@@ -14,6 +14,7 @@ const MetricCard = ({ title, value, unit = "%" }: MetricCardProps) => {
     if (val >= 70) return "#f59e0b";
     return "#22c55e";
   };
+  const numValue = typeof value === 'string' ? parseFloat(value) : value;
   return (
     <Card className=" text-center">
       <Text type="secondary">{title}</Text>
@@ -23,8 +24,8 @@ const MetricCard = ({ title, value, unit = "%" }: MetricCardProps) => {
       </Title>
       <Progress
         type="circle"
-        percent={value}
-        stroke={getColor(value)}
+        percent={numValue}
+        stroke={getColor(numValue)}
         width={120}
         showInfo={false}
       />
