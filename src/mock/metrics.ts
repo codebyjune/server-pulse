@@ -1,17 +1,17 @@
 const mockMetrics= [
-    {
+    { id:1,
       title: "CPU",
       value: 45.2,
     },
-    {
+    {id:2,
       title: "内存",
       value: 20,
     },
-    {
+    {id:3,
       title: "磁盘",
       value: 10,
     },
-    {
+    {id:4,
       title: "网络",
       value: 890,
       unit: "MB/s",

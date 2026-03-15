@@ -8,7 +8,7 @@ const Dashboard = () => {
       DASHBOARD
       <Row>
         {mockMetrics.map((d) => (
-          <Col span={6}>
+          <Col span={6}key={d.id}>
             <div >
               <MetricCard title={d.title} value={d.value} unit={d.unit} />
             </div>
