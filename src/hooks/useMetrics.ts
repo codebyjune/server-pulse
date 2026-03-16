@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
-
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import type { Socket } from "socket.io-client";
 interface Metrics {
   cpu: number;
   memory: { used: number; total: number; percent: number };
@@ -10,19 +10,16 @@ interface Metrics {
 }
 
 export function useMetrics() {
-  const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [metricsData, setMetricsData] = useState<Metrics | null>(null);
 
   useEffect(() => {
-    const socket: Socket = io('http://localhost:3000');
-    
-    socket.on('metrics', (data: Metrics) => {
-      setMetrics(data);
+    const socket: Socket = io("http://localhost:3000");
+    socket.on("metrics", (data: Metrics) => {
+      setMetricsData(data);
     });
-
     return () => {
       socket.disconnect();
     };
   }, []);
-
-  return metrics;
+  return metricsData;
 }

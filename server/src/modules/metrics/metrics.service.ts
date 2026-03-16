@@ -5,10 +5,10 @@ import * as si from 'systeminformation';
 export class MetricsService {
   async getMetrics() {
     const [cpu, mem, disk, network] = await Promise.all([
-      si.currentLoad(),      // CPU
-      si.mem(),              // 内存
-      si.fsSize(),           // 磁盘
-      si.networkStats(),     // 网络
+      si.currentLoad(), // CPU
+      si.mem(), // 内存
+      si.fsSize(), // 磁盘
+      si.networkStats(), // 网络
     ]);
 
     return {
@@ -26,4 +26,23 @@ export class MetricsService {
       timestamp: Date.now(),
     };
   }
+
+async getSystemInfo() {
+  const [osInfo, cpuInfo, time] = await Promise.all([
+    si.osInfo(),       // 系统信息
+    si.cpu(),          // CPU 信息
+    si.time(),         // 运行时间
+  ]);
+
+  return {
+    hostname: osInfo.hostname,
+    platform: osInfo.platform,
+    distro: osInfo.distro,
+    release: osInfo.release,
+    cpuModel: cpuInfo.brand,
+    cpuCores: cpuInfo.cores,
+    uptime: time.uptime,  // 秒
+  };
+}
+
 }
