@@ -2,8 +2,6 @@ import MetricCard from "../components/dashboard/MetricCard";
 import { useSystemInfo } from "../hooks/useSystemInfo";
 import { useMetrics } from "../hooks/useMetrics";
 import { Card, Typography } from "@douyinfe/semi-ui";
-import MetricsChart from '../components/dashboard/MetricsChart';
-import { useMetricsHistory } from '../hooks/useMetricsHistory';
 
 const { Title, Text } = Typography;
 function formatUptime(seconds: number) {
@@ -15,11 +13,11 @@ function formatUptime(seconds: number) {
 const Dashboard = () => {
   const metrics = useMetrics();
   const systemInfo = useSystemInfo();
-   const history = useMetricsHistory();
+
   if (!metrics) return <div>连接中...</div>;
   return (
     <div className="p-4">
-       {systemInfo && (
+      {systemInfo && (
         <Card className="mb-4" shadows="hover">
           <div className="grid grid-cols-4 gap-4">
             <div>
@@ -51,9 +49,9 @@ const Dashboard = () => {
           unit="KB/s"
         />
       </div>
-       <div className="mt-4">
+      {/* <div className="mt-4">
         <MetricsChart data={history} />
-      </div>
+      </div> */}
     </div>
   );
 };

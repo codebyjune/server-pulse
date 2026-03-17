@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import { useMetrics } from "./useMetrics";
 
 interface HistoryPoint {
-  time: string;
+  id: number;
   cpu: number;
   memory: number;
+  disk: number;
+  networkRx: number;
+  networkTx: number;
+  createdAt: string;
 }
 
-export function useMetricsHistory(maxPoints = 30) {
-  const metrics = useMetrics();
+export function useMetricsHistory(hours: number = 1) {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (!metrics) return;
-
-    const time = new Date().toLocaleTimeString();
-    setHistory((prev) => {
-      const newHistory = [
-        ...prev,
-        {
-          time,
-          cpu: metrics.cpu,
-          memory: metrics.memory.percent,
-        },
-      ];
-      return newHistory.slice(-maxPoints);
-    });
-   
-  }, [metrics, maxPoints]);
-
-  return history;
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/metrics/history?hours=${hours}`,
+        );
+        const data = await res.json();
+        setHistory(data);
+      } catch (error) {
+        console.error("Failed to fetch metrics history:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHistory();
+  }, [hours]);
+  return { history, loading };
 }

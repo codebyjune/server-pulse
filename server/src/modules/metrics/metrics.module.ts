@@ -9,4 +9,4 @@ import { Metrics } from './entities/metric.entity';
   controllers: [MetricsController],
   providers: [MetricsService, MetricsGateway],
 })
-export class MetricsModule { }
+export class MetricsModule {}

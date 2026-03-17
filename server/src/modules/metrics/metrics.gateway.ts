@@ -13,9 +13,18 @@ export class MetricsGateway implements OnModuleInit {
 
   onModuleInit() {
     // 每2秒推送一次数据
-    setInterval(async () => {
-      const data = await this.metricsService.getMetrics();
-      this.server.emit('metrics', data);
+    setInterval(() => {
+      this.metricsService
+        .getMetrics()
+        .then((data) => {
+          this.server.emit('metrics', data);
+        })
+        .catch(console.error);
     }, 2000);
+
+    // 每10秒存一次数据库
+    setInterval(() => {
+      this.metricsService.collectAndSave().catch(console.error);
+    }, 10000);
   }
 }

@@ -15,10 +15,10 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       </Sider>
       <Layout>
         <Header style={commonStyle}>Header</Header>
-        <Content style={{ height: 300, lineHeight: "300px" }}>
+        <Content >
           {children}
         </Content>
-        <Footer style={commonStyle}>Footer</Footer>
+       
       </Layout>
     </Layout>
   );
