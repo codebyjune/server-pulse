@@ -1,8 +1,10 @@
 import { Nav } from "@douyinfe/semi-ui";
 import { IconHome ,IconHistory,IconAlertCircle, IconPulse,  IconSetting, IconServer} from "@douyinfe/semi-icons";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SideBar = () => {
+   const navigate = useNavigate();
+  const location = useLocation();
   return (
     <Nav
       className=" h-full"
@@ -20,8 +22,8 @@ const SideBar = () => {
       footer={{
         collapseButton: true,
       }}
-      onSelect={(data) => console.log("trigger onSelect: ", data)}
-      onClick={(data) => console.log("trigger onClick: ", data)}
+      selectedKeys={[location.pathname]}
+      onSelect={({ itemKey }) => navigate(itemKey as string)}
     />
   );
 };

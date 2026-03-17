@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import type { Socket } from "socket.io-client";
-interface Metrics {
+export interface Metrics {
   cpu: number;
   memory: { used: number; total: number; percent: number };
   disk: number;

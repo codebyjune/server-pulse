@@ -16,7 +16,7 @@ const MetricCard = ({ title, value, unit = "%" }: MetricCardProps) => {
   };
   const numValue = typeof value === 'string' ? parseFloat(value) : value;
   return (
-    <Card className=" text-center">
+    <Card className=" text-center" shadows="hover">
       <Text type="secondary">{title}</Text>
       <Title heading={1} style={{ margin: "8px 0" }} weight={"semibold"}>
         {value}
