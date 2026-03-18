@@ -1,12 +1,13 @@
-import { Layout } from "@douyinfe/semi-ui";
+import { Layout, Button, Typography, Space } from "@douyinfe/semi-ui";
 import SideBar from "./Sidebar";
-
+import { IconRefresh, IconMoon, IconUser } from "@douyinfe/semi-icons";
+const { Text } = Typography;
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Header, Sider, Content } = Layout;
   const commonStyle = {
     height: 64,
     lineHeight: "64px",
-    background: "var(--semi-color-fill-0)",
+    background: "#f8f9fa",
   };
   return (
     <Layout className="h-screen">
@@ -14,11 +15,21 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <SideBar />
       </Sider>
       <Layout>
-        <Header style={commonStyle}>Header</Header>
-        <Content >
-          {children}
-        </Content>
-       
+        <Header
+          style={commonStyle}
+          className="flex items-center justify-between px-6"
+        >
+          <Text strong className="text-lg">
+            🖥️ Server Pulse
+          </Text>
+          <Space>
+            <Text type="tertiary">💻 DESKTOP-XXX</Text>
+            <Button icon={<IconRefresh />} theme="borderless" />
+            <Button icon={<IconMoon />} theme="borderless" />
+            <Button icon={<IconUser />} theme="borderless" />
+          </Space>
+        </Header>
+        <Content>{children}</Content>
       </Layout>
     </Layout>
   );
