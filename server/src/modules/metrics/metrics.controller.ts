@@ -13,4 +13,8 @@ export class MetricsController {
   async getHistory(@Query('hours') hours?: number) {
     return this.metricsService.getHistory(hours || 1);
   }
+  @Get('stats')
+  async getStats(@Query('hours') hours?: number) {
+    return this.metricsService.getStats(hours || 1);
+  }
 }

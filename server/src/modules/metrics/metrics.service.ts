@@ -82,4 +82,49 @@ export class MetricsService {
       uptime: time.uptime, // 秒
     };
   }
+
+  async getStats(hours: number = 1) {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000);
+
+    const result = await this.metricRepo
+      .createQueryBuilder('m')
+      .select('MIN(m.cpu)', 'cpuMin')
+      .addSelect('MAX(m.cpu)', 'cpuMax')
+      .addSelect('AVG(m.cpu)', 'cpuAvg')
+      .addSelect('MIN(m.memory)', 'memMin')
+      .addSelect('MAX(m.memory)', 'memMax')
+      .addSelect('AVG(m.memory)', 'memAvg')
+      .addSelect('COUNT(*)', 'count')
+      .where('m.createdAt > :since', { since })
+      .getRawOne<{
+        cpuMin: string | null;
+        cpuMax: string | null;
+        cpuAvg: string | null;
+        memMin: string | null;
+        memMax: string | null;
+        memAvg: string | null;
+        count: string | null;
+      }>();
+    // 查询内存峰值的时间
+    const memMaxRecord = await this.metricRepo
+      .createQueryBuilder('m')
+      .where('m.createdAt > :since', { since })
+      .orderBy('m.memory', 'DESC')
+      .limit(1)
+      .getOne();
+    return {
+      cpu: {
+        min: Number(result?.cpuMin) || 0,
+        max: Number(result?.cpuMax) || 0,
+        avg: Number(result?.cpuAvg) || 0,
+      },
+      memory: {
+        min: Number(result?.memMin) || 0,
+        max: Number(result?.memMax) || 0,
+        avg: Number(result?.memAvg) || 0,
+        maxAt: memMaxRecord?.createdAt,
+      },
+      count: Number(result?.count) || 0,
+    };
+  }
 }
