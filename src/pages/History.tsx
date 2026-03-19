@@ -1,11 +1,15 @@
 import { useMetricsHistory } from "../hooks/useMetricsHistory";
-import MetricsChart from "../components/dashboard/MetricsChart";
+import HistoryChart from "../components/History/HistoryChart";
 import { Select, Row, Col } from "@douyinfe/semi-ui";
 import { IconPulse, IconServer, IconList } from "@douyinfe/semi-icons";
 import { useMemo, useState } from "react";
 import { useStats } from "../hooks/useStats";
 import { StatCard } from "../components/History/StatCard";
-
+import {
+  IllustrationNoResult,
+  IllustrationNoResultDark,
+} from "@douyinfe/semi-illustrations";
+import { Empty } from "@douyinfe/semi-ui";
 const formatTime = (dateStr: string, days: number) => {
   const date = new Date(dateStr);
   if (days === 1) {
@@ -30,6 +34,11 @@ const History = () => {
   const { history, loading } = useMetricsHistory(days * 24); // 天数转小时
   const statConfig = useMemo(() => {
     if (!stats) return [];
+    const formatTime = (dateStr?: number) => {
+      if (!dateStr) return undefined;
+      const date = new Date(dateStr);
+      return `${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
+    };
     return [
       {
         label: "CPU 峰值",
@@ -48,7 +57,7 @@ const History = () => {
         value: `${stats.memory.max.toFixed(1)}%`,
         icon: <IconServer size="extra-large" />,
         color: "var(--semi-color-danger)",
-        tooltip: stats.memory.maxAt,
+        tooltip: formatTime(stats.memory.maxAt),
       },
       {
         label: "数据量",
@@ -68,7 +77,19 @@ const History = () => {
     [history, days],
   );
 
-  if (loading || statsLoading) return <div>加载中</div>;
+  if (loading || statsLoading)
+    return (
+      <div className="flex justify-center items-center" style={{ height: 400 }}>
+        <Empty
+          image={<IllustrationNoResult style={{ width: 150, height: 150 }} />}
+          darkModeImage={
+            <IllustrationNoResultDark style={{ width: 150, height: 150 }} />
+          }
+          title="暂无数据"
+          description="当前时间段内没有监控数据，请稍后再试"
+        />
+      </div>
+    );
   return (
     <div>
       <div className=" mt-4 ml-10  flex ">
@@ -100,7 +121,7 @@ const History = () => {
         </div>
       )}
       <div className=" mr-10">
-        <MetricsChart data={chartData} />
+        <HistoryChart data={chartData} />
       </div>
     </div>
   );
