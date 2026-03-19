@@ -21,5 +21,5 @@ export function useMetrics() {
       socket.disconnect();
     };
   }, []);
-  return metricsData;
+  return  metricsData
 }

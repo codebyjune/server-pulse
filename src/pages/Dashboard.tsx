@@ -11,41 +11,41 @@ function formatUptime(seconds: number) {
   return `${days}天 ${hours}小时 ${mins}分`;
 }
 const Dashboard = () => {
-  const metrics = useMetrics();
-  const systemInfo = useSystemInfo();
+  const metricsData= useMetrics();
+  const info= useSystemInfo();
 
-  if (!metrics) return <div>连接中...</div>;
+  if (!metricsData||!info) return <div>连接中...</div>;
   return (
     <div className="p-4">
-      {systemInfo && (
+      {info && (
         <Card className="mb-4" shadows="hover">
           <div className="grid grid-cols-4 gap-4">
             <div>
               <Text type="secondary">主机名</Text>
-              <Title heading={5}>{systemInfo.hostname}</Title>
+              <Title heading={5}>{info.hostname}</Title>
             </div>
             <div>
               <Text type="secondary">系统</Text>
-              <Title heading={5}>{systemInfo.distro}</Title>
+              <Title heading={5}>{info.distro}</Title>
             </div>
             <div>
               <Text type="secondary">CPU</Text>
-              <Title heading={5}>{systemInfo.cpuCores} 核心</Title>
+              <Title heading={5}>{info.cpuCores} 核心</Title>
             </div>
             <div>
               <Text type="secondary">运行时长</Text>
-              <Title heading={5}>{formatUptime(systemInfo.uptime)}</Title>
+              <Title heading={5}>{formatUptime(info.uptime)}</Title>
             </div>
           </div>
         </Card>
       )}
       <div className="grid grid-cols-4 gap-4 mt-4">
-        <MetricCard title="CPU" value={metrics.cpu.toFixed(1)} />
-        <MetricCard title="内存" value={metrics.memory.percent.toFixed(1)} />
-        <MetricCard title="磁盘" value={metrics.disk.toFixed(1)} />
+        <MetricCard title="CPU" value={metricsData.cpu.toFixed(1)} />
+        <MetricCard title="内存" value={metricsData.memory.percent.toFixed(1)} />
+        <MetricCard title="磁盘" value={metricsData.disk.toFixed(1)} />
         <MetricCard
           title="网络"
-          value={(metrics.network.rx / 1024).toFixed(1)}
+          value={(metricsData.network.rx / 1024).toFixed(1)}
           unit="KB/s"
         />
       </div>

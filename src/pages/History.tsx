@@ -76,8 +76,15 @@ const History = () => {
       })),
     [history, days],
   );
+  if (loading || statsLoading) {
+    return (
+      <div className=" flex  justify-center items-center h-full">
+        <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-600"></div>
+      </div>
+    );
+  }
 
-  if (loading || statsLoading)
+  if (!history.length)
     return (
       <div className="flex justify-center items-center" style={{ height: 400 }}>
         <Empty

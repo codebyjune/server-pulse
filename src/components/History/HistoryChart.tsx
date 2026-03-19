@@ -51,6 +51,9 @@ function HistoryChart({ data }: Props) {
         smooth: true,
         data: data.map((h) => h.cpu),
         color: "#7950f2",
+        areaStyle: {
+          opacity: 0.3,
+        },
       },
       {
         name: "内存",
@@ -58,6 +61,9 @@ function HistoryChart({ data }: Props) {
         smooth: true,
         data: data.map((h) => h.memory),
         color: "#228be6",
+        areaStyle: {
+          opacity: 0.3,
+        },
       },
     ],
   };

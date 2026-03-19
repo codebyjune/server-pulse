@@ -13,7 +13,7 @@ interface SystemInfo {
 
 export function useSystemInfo() {
   const [info, setInfo] = useState<SystemInfo | null>(null);
-
+ 
   useEffect(() => {
     fetch("http://localhost:3000/metrics/system")
       .then((res) => res.json())
@@ -21,5 +21,5 @@ export function useSystemInfo() {
       .catch(console.error);
   }, []);
 
-  return info;
+  return info
 }
