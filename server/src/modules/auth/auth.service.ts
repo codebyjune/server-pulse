@@ -1,7 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-
+import { createAvatar } from '@dicebear/core';
+import { adventurer } from '@dicebear/collection';
+import type { Options } from '@dicebear/core';
 @Injectable()
 export class AuthService {
   constructor(
@@ -33,6 +39,7 @@ export class AuthService {
       user: {
         id: user.id,
         username: user.username,
+        avatar: user.avatar,
       },
     };
   }
@@ -42,14 +49,20 @@ export class AuthService {
     // 检查用户是否已存在
     const existingUser = await this.userService.findByUsername(username);
     if (existingUser) {
-      throw new UnauthorizedException('用户名已存在');
+      throw new ConflictException('用户名已存在');
     }
+    const options: Options = {
+      seed:username,
 
+      // ... other options
+    };
+    const avatar = createAvatar(adventurer, options).toDataUri();
     // 创建用户
-    const user = await this.userService.create(username, password);
+    const user = await this.userService.create(username, password, avatar);
     return {
       id: user.id,
       username: user.username,
+      avatar: user.avatar,
     };
   }
 }

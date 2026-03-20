@@ -13,9 +13,17 @@ export class UserService {
   async findByUsername(username: string): Promise<User | null> {
     return this.userRepo.findOne({ where: { username } });
   }
-  async create(username: string, password: string): Promise<User> {
+  async create(
+    username: string,
+    password: string,
+    avatar?: string,
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = this.userRepo.create({ username, password: hashedPassword });
+    const user = this.userRepo.create({
+      username,
+      password: hashedPassword,
+      avatar,
+    });
     return this.userRepo.save(user);
   }
 

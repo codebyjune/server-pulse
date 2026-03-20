@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 interface User {
   id: number;
   username: string;
+  avatar: string;
 }
 
 interface AuthResult {
@@ -38,7 +39,7 @@ export function useAuth() {
         });
 
         const data = await res.json();
-
+        console.log(data);
         if (!res.ok) {
           return { success: false, message: data.message || "登录失败" };
         }

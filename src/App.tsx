@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
-import Realtime from "./pages/Realtime";
+
 import History from "./pages/History";
 import Login from "./pages/Login";
 
@@ -23,7 +23,7 @@ function App() {
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
-                  <Route path="/realtime" element={<Realtime />} />
+
                   <Route path="/history" element={<History />} />
                 </Routes>
               </AppLayout>
