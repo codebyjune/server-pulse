@@ -3,7 +3,7 @@ import {
   IconHome,
   IconHistory,
   IconAlertCircle,
-  IconPulse,
+  
   IconSetting,
   IconServer,
 } from "@douyinfe/semi-icons";
