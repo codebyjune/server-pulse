@@ -13,7 +13,10 @@ function Login() {
   const registerFormApi = useRef<FormApi | null>(null);
 
   // 登录表单提交
-  const handleLogin = async (values: { username: string; password: string }) => {
+  const handleLogin = async (values: {
+    username: string;
+    password: string;
+  }) => {
     setLoading(true);
     const result = await login(values.username, values.password);
     setLoading(false);
@@ -27,7 +30,11 @@ function Login() {
   };
 
   // 注册表单提交
-  const handleRegister = async (values: { username: string; password: string; confirmPassword: string }) => {
+  const handleRegister = async (values: {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  }) => {
     setLoading(true);
     const result = await register(values.username, values.password);
     setLoading(false);
@@ -62,7 +69,11 @@ function Login() {
         </div>
 
         {/* 登录/注册切换 */}
-        <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} size="large">
+        <Tabs
+          activeKey={activeTab}
+          onChange={(key) => setActiveTab(key)}
+          size="large"
+        >
           {/* 登录表单 */}
           <TabPane tab="登录" itemKey="login">
             <Form onSubmit={handleLogin} layout="vertical">

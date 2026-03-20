@@ -28,51 +28,57 @@ export function useAuth() {
   }, []);
 
   // 登录
-  const login = useCallback(async (username: string, password: string): Promise<AuthResult> => {
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+  const login = useCallback(
+    async (username: string, password: string): Promise<AuthResult> => {
+      try {
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        return { success: false, message: data.message || "登录失败" };
+        if (!res.ok) {
+          return { success: false, message: data.message || "登录失败" };
+        }
+
+        // 存储 token 和用户信息
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user);
+
+        return { success: true };
+      } catch (error) {
+        return { success: false, message: "网络错误，请稍后重试" };
       }
-
-      // 存储 token 和用户信息
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setUser(data.user);
-
-      return { success: true };
-    } catch (error) {
-      return { success: false, message: "网络错误，请稍后重试" };
-    }
-  }, []);
+    },
+    [],
+  );
 
   // 注册
-  const register = useCallback(async (username: string, password: string): Promise<AuthResult> => {
-    try {
-      const res = await fetch(`${API_BASE}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+  const register = useCallback(
+    async (username: string, password: string): Promise<AuthResult> => {
+      try {
+        const res = await fetch(`${API_BASE}/auth/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        return { success: false, message: data.message || "注册失败" };
+        if (!res.ok) {
+          return { success: false, message: data.message || "注册失败" };
+        }
+
+        return { success: true, message: "注册成功，请登录" };
+      } catch (error) {
+        return { success: false, message: "网络错误，请稍后重试" };
       }
-
-      return { success: true, message: "注册成功，请登录" };
-    } catch (error) {
-      return { success: false, message: "网络错误，请稍后重试" };
-    }
-  }, []);
+    },
+    [],
+  );
 
   // 登出
   const logout = useCallback(() => {
